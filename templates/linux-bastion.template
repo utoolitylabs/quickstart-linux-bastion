@@ -39,6 +39,15 @@
                 },
                 {
                     "Label": {
+                        "default": "Development Configuration"
+                    },
+                    "Parameters": [
+                        "MaxSpotPrice",
+                        "UseSpotInstances"
+                    ]
+                },
+                {
+                    "Label": {
                         "default": "AWS Quick Start Configuration"
                     },
                     "Parameters": [
@@ -69,6 +78,9 @@
                 "KeyPairName": {
                     "default": "Key Pair Name"
                 },
+                "MaxSpotPrice": {
+                    "default": "Maximum Spot Price"
+                },
                 "NumBastionHosts": {
                     "default": "Number of Bastion Hosts"
                 },
@@ -86,6 +98,9 @@
                 },
                 "RemoteAccessCIDR": {
                     "default": "Allowed Bastion External Access CIDR"
+                },
+                "UseSpotInstances": {
+                    "default": "Use Spot Instances"
                 },
                 "VPCID": {
                     "default": "VPC ID"
@@ -163,6 +178,12 @@
             "Description": "Enter a Public/private key pair. If you do not have one in this region, please create it before continuing",
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
+        "MaxSpotPrice": {
+            "MinValue": "0.0001",
+            "Default": "0.4210",
+            "Description": "(Legacy) Maximum spot price (rarely relevant anymore after spot pricing model change)",
+            "Type": "Number"
+        },
         "NumBastionHosts": {
             "AllowedValues": [
                 "1",
@@ -201,6 +222,16 @@
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x",
             "Description": "Allowed CIDR block for external SSH access to the bastions",
             "Type": "String"
+        },
+        "UseSpotInstances": {
+            "Description": "Use Amazon EC2 spot instances",
+            "Type": "String",
+            "Default": "false",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "ConstraintDescription": "Must be 'true' or 'false'."
         },
         "VPCID": {
             "Description": "ID of the VPC (e.g., vpc-0343606e)",
@@ -391,6 +422,14 @@
                     "Ref": "AWS::Region"
                 },
                 "us-gov-west-1"
+            ]
+        },
+        "UseSpotInstances": {
+            "Fn::Equals": [
+                {
+                    "Ref": "UseSpotInstances"
+                },
+                "true"
             ]
         }
     },
@@ -711,6 +750,17 @@
                 ],
                 "InstanceType": {
                     "Ref": "BastionInstanceType"
+                },
+                "SpotPrice": {
+                    "Fn::If": [
+                        "UseSpotInstances",
+                        {
+                            "Ref": "MaxSpotPrice"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
                 },
                 "UserData": {
                     "Fn::Base64": {
