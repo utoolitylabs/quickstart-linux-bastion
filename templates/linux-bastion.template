@@ -43,6 +43,7 @@
                     },
                     "Parameters": [
                         "MaxSpotPrice",
+                        "StandbyMode",
                         "UseSpotInstances"
                     ]
                 },
@@ -98,6 +99,9 @@
                 },
                 "RemoteAccessCIDR": {
                     "default": "Allowed Bastion External Access CIDR"
+                },
+                "StandbyMode": {
+                    "default": "Standby Mode"
                 },
                 "UseSpotInstances": {
                     "default": "Use Spot Instances"
@@ -222,6 +226,16 @@
             "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/x",
             "Description": "Allowed CIDR block for external SSH access to the bastions",
             "Type": "String"
+        },
+        "StandbyMode": {
+            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+            "Type": "String",
+            "Default": "active",
+            "AllowedValues": [
+                "cold",
+                "active"
+            ],
+            "ConstraintDescription": "Must be 'cold' or 'active'."
         },
         "UseSpotInstances": {
             "Description": "Use Amazon EC2 spot instances",
@@ -414,6 +428,14 @@
                     "Ref": "NumBastionHosts"
                 },
                 "4"
+            ]
+        },
+        "DisableBastionHosts": {
+            "Fn::Equals": [
+                {
+                    "Ref": "StandbyMode"
+                },
+                "cold"
             ]
         },
         "GovCloudCondition": {
@@ -621,14 +643,32 @@
                     }
                 ],
                 "MinSize": {
-                    "Ref": "NumBastionHosts"
+                    "Fn::If": [
+                        "DisableBastionHosts",
+                        "0",
+                        {
+                            "Ref": "NumBastionHosts"
+                        }
+                    ]
                 },
                 "MaxSize": {
-                    "Ref": "NumBastionHosts"
+                    "Fn::If": [
+                        "DisableBastionHosts",
+                        "0",
+                        {
+                            "Ref": "NumBastionHosts"
+                        }
+                    ]
                 },
                 "Cooldown": "300",
                 "DesiredCapacity": {
-                    "Ref": "NumBastionHosts"
+                    "Fn::If": [
+                        "DisableBastionHosts",
+                        "0",
+                        {
+                            "Ref": "NumBastionHosts"
+                        }
+                    ]
                 },
                 "Tags": [
                     {
