@@ -45,6 +45,7 @@
                         "default": "Development Configuration"
                     },
                     "Parameters": [
+                        "StandbyMode",
                         "UseSpotInstances"
                     ]
                 },
@@ -73,6 +74,9 @@
                 },
                 "EnableBanner": {
                     "default": "Enable Banner"
+                },
+                "StandbyMode": {
+                    "default": "Enable Standby Mode"
                 },
                 "EnableTCPForwarding": {
                     "default": "Enable TCP Forwarding"
@@ -249,6 +253,16 @@
             "Description": "Allowed CIDR block for external SSH access to the bastions",
             "Type": "String"
         },
+        "StandbyMode": {
+            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+            "Type": "String",
+            "Default": "active",
+            "AllowedValues": [
+                "cold",
+                "active"
+            ],
+            "ConstraintDescription": "Must be 'cold' or 'active'."
+        },
         "UseSpotInstances": {
             "Description": "Use Amazon EC2 spot instances",
             "Type": "String",
@@ -356,6 +370,9 @@
                     },
                     "EnableBanner": {
                         "Ref": "EnableBanner"
+                    },
+                    "StandbyMode": {
+                        "Ref": "StandbyMode"
                     },
                     "EnableTCPForwarding": {
                         "Ref": "EnableTCPForwarding"
