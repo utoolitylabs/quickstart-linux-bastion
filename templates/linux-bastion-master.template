@@ -75,9 +75,6 @@
                 "EnableBanner": {
                     "default": "Enable Banner"
                 },
-                "StandbyMode": {
-                    "default": "Enable Standby Mode"
-                },
                 "EnableTCPForwarding": {
                     "default": "Enable TCP Forwarding"
                 },
@@ -110,6 +107,9 @@
                 },
                 "RemoteAccessCIDR": {
                     "default": "Allowed Bastion External Access CIDR"
+                },
+                "StandbyMode": {
+                    "default": " Standby Mode"
                 },
                 "UseSpotInstances": {
                     "default": "Use Spot Instances"
