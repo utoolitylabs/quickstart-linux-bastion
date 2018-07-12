@@ -39,7 +39,7 @@
                 },
                 {
                     "Label": {
-                        "default": "Development Configuration"
+                        "default": "Availability/Cost Configuration"
                     },
                     "Parameters": [
                         "MaxSpotPrice",
