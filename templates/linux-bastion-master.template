@@ -45,7 +45,7 @@
                         "default": "Availability/Cost Configuration"
                     },
                     "Parameters": [
-                        "StandbyMode",
+                        "StackStandbyMode",
                         "UseSpotInstances"
                     ]
                 },
@@ -108,8 +108,8 @@
                 "RemoteAccessCIDR": {
                     "default": "Allowed Bastion External Access CIDR"
                 },
-                "StandbyMode": {
-                    "default": " Standby Mode"
+                "StackStandbyMode": {
+                    "default": "Stack Standby Mode"
                 },
                 "UseSpotInstances": {
                     "default": "Use Spot Instances"
@@ -236,7 +236,7 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "aws-quickstart",
+            "Default": "utoolity-aws-quickstart",
             "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
@@ -253,8 +253,8 @@
             "Description": "Allowed CIDR block for external SSH access to the bastions",
             "Type": "String"
         },
-        "StandbyMode": {
-            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+        "StackStandbyMode": {
+            "Description": "Disable/Enable applicable stack resources for cost saving purposes",
             "Type": "String",
             "Default": "active",
             "AllowedValues": [
@@ -371,8 +371,8 @@
                     "EnableBanner": {
                         "Ref": "EnableBanner"
                     },
-                    "StandbyMode": {
-                        "Ref": "StandbyMode"
+                    "StackStandbyMode": {
+                        "Ref": "StackStandbyMode"
                     },
                     "EnableTCPForwarding": {
                         "Ref": "EnableTCPForwarding"
